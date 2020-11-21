@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="1dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/colorWhite">
+
+    <RelativeLayout
+        android:id="@+id/oldumu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!--ImageView: Show User Image-->
+        <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+            android:id="@+id/profileIv"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            app:c_border="true"
+            app:c_border_width="1dp"
+            app:c_border_color="@color/colorGray"
+            android:src="@drawable/ic_person_black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/profileIv"
+            android:layout_toStartOf="@id/main_item_contact"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/profileIv"
+            android:layout_toLeftOf="@id/moreBtn">
+            <!--TextView: User Name-->
+            <TextView
+                android:id="@+id/nameTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"/>
+            <!--TextView: User Phone-->
+            <TextView
+                android:id="@+id/phoneTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"/>
+            <!--TextView: User Email-->
+            <TextView
+                android:id="@+id/emailTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"/>
+            <!--TextView: User DOB-->
+            <TextView
+                android:id="@+id/dobTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dob"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"/>
+
+
+        </LinearLayout>
+
+        <!--ImageButton: Show more options like delete, edit etc-->
+        <ImageButton
+            android:id="@+id/moreBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="55dp"
+            android:src="@drawable/ic_more_black"
+            android:background="@color/colorWhite"
+            android:layout_alignParentRight="true"/>
+
+        <ImageView
+            android:id="@+id/main_item_contact"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_call"
+            android:background="@color/colorWhite"
+            android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

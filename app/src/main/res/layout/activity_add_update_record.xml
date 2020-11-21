@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddUpdateRecordActivity">
+
+    <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+        android:id="@+id/profileIv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        app:c_border="true"
+        app:c_border_width="1dp"
+        app:c_border_color="@color/colorGray"
+        android:src="@drawable/ic_camera_black"/>
+
+    <EditText
+        android:id="@+id/nameEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="4dp"
+        android:inputType="textPersonName|textCapWords"
+        android:layout_below="@id/profileIv"
+        android:hint="Name"
+        android:background="@drawable/shape_rectangle"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/phoneEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="4dp"
+        android:inputType="phone"
+        android:layout_below="@id/nameEt"
+        android:hint="Phone"
+        android:background="@drawable/shape_rectangle"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/emailEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="4dp"
+        android:inputType="textEmailAddress"
+        android:layout_below="@id/phoneEt"
+        android:hint="Email"
+        android:background="@drawable/shape_rectangle"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/dobEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/shape_rectangle"
+        android:padding="10dp"
+        android:layout_below="@id/emailEt"
+        android:hint="DOB dd/mm/yyyy"/>
+
+    <EditText
+        android:id="@+id/biolEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="4dp"
+        android:inputType="textCapSentences|textImeMultiLine"
+        android:layout_below="@id/dobEt"
+        android:minHeight="90dp"
+        android:gravity="start"
+        android:background="@drawable/shape_rectangle"
+        android:padding="5dp"
+        android:hint="Short description"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="9dp"
+        android:src="@drawable/ic_done_white" />
+
+</RelativeLayout>
