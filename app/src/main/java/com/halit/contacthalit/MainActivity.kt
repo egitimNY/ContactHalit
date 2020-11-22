@@ -2,6 +2,7 @@ package com.halit.contacthalit
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -45,9 +46,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    lateinit var  adapterRecord:AdapterRecord
+
     private fun loadRecords(orderBy:String) {
         recentSortOrder = orderBy
-        val adapterRecord = AdapterRecord(this, dbHelper.getAllRecords(orderBy)) {
+        adapterRecord = AdapterRecord(this, dbHelper.getAllRecords(orderBy)) {
             makeACall(it)
         }
 
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchRecords(query:String) {
-        val adapterRecord = AdapterRecord(this, dbHelper.searchRecords(query)) {
+        adapterRecord = AdapterRecord(this, dbHelper.searchRecords(query)) {
             makeACall(it)
         }
 
@@ -147,8 +150,20 @@ class MainActivity : AppCompatActivity() {
         }
         else if (id==R.id.action_deleteAll){
             // Delete all records
-            dbHelper.deleteAllRecords()
-            onResume()
+            val alertDialog = AlertDialog.Builder(this).setTitle("Delete All").setMessage("Do you want to delete All")
+                .setPositiveButton("Ok",object:DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        dbHelper.deleteAllRecords()
+                        adapterRecord.notifyDataSetChanged()
+                    }
+                })
+                .setNegativeButton("Cancel", object:DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        dialog?.dismiss()
+                    }
+                })
+                .create()
+            alertDialog.show()
         }
         return super.onOptionsItemSelected(item)
     }
