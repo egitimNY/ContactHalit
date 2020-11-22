@@ -28,6 +28,11 @@ class AdapterRecord(val makeACall: (number: String) -> Unit): RecyclerView.Adapt
         dbHelper = MyDbHelper(context)
     }
 
+    fun clearRecords() {
+        recordList?.clear()
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderRecord {
         // inflate the layout row_record.xml
         return HolderRecord(

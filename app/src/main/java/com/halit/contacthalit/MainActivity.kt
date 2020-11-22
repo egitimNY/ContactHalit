@@ -14,8 +14,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * This class is responsible for displaying all the available records in the DB, and
+ * you could edit and delete the existing contacts by selecting a three dots icon
+ * and you can go to AddUpdateRecord screen to create a new record
+ */
 class MainActivity : AppCompatActivity() {
 
+    //Request code while requesting the call permission from the user
     private val REQUEST_PHONE_CALL: Int= 1
     // dbHelper
     lateinit var dbHelper: MyDbHelper
@@ -27,6 +33,10 @@ class MainActivity : AppCompatActivity() {
     private val TITLE_DESC = "${Constants.C_NAME} DESC"
 
     private var recentSortOrder = NEWEST_FIRST
+
+    //reference variable of adapter to display a list of values in the recycler view
+    lateinit var  adapterRecord:AdapterRecord
+    //A variable to hold the phone number until user grants the permission to make a call
     private var number: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,20 +56,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    lateinit var  adapterRecord:AdapterRecord
-
     private fun loadRecords(orderBy:String) {
         recentSortOrder = orderBy
-        adapterRecord = AdapterRecord(this, dbHelper.getAllRecords(orderBy)) {
-            makeACall(it)
+        adapterRecord = AdapterRecord(this, dbHelper.getAllRecords(orderBy)) { number ->
+            makeACall(number)
         }
 
         recordRv.adapter = adapterRecord
     }
 
     private fun searchRecords(query:String) {
-        adapterRecord = AdapterRecord(this, dbHelper.searchRecords(query)) {
-            makeACall(it)
+        adapterRecord = AdapterRecord(this, dbHelper.searchRecords(query)) { number ->
+            makeACall(number)
         }
 
         recordRv.adapter = adapterRecord
@@ -154,7 +162,7 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton("Ok",object:DialogInterface.OnClickListener{
                     override fun onClick(dialog: DialogInterface?, which: Int) {
                         dbHelper.deleteAllRecords()
-                        adapterRecord.notifyDataSetChanged()
+                        adapterRecord.clearRecords()
                     }
                 })
                 .setNegativeButton("Cancel", object:DialogInterface.OnClickListener{
