@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddUpdateRecordActivity"></activity>
+        <activity android:name=".BigImageActivity"></activity>
+        <activity android:name=".AddUpdateRecordActivity" />
         <activity android:name=".RecordDetailActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

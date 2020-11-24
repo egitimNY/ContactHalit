@@ -91,6 +91,20 @@ class RecordDetailActivity : AppCompatActivity() {
                     makeACall(phone)
                 }
 
+                profileIv.setOnClickListener {
+
+                    // pass id to next activity to show record
+                    val intent = Intent(this@RecordDetailActivity, BigImageActivity::class.java)
+                    intent.putExtra("RECORD_ID", recordId)
+                    startActivity(intent)
+
+
+//                        val intent = Intent(this@RecordDetailActivity, BigImageActivity::class.java)
+//                        intent.putExtra("resId", image)
+//                        startActivity(intent)
+
+                }
+
                 // if user dosn't attach image then imageUri will be null, so set default image in that case
                 if (image == "null"){
                     // no image in record, set default
