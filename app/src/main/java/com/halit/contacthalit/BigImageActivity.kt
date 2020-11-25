@@ -32,11 +32,13 @@ class BigImageActivity : AppCompatActivity() {
 
         if (cursor?.moveToFirst() == true) {
             val image = ""+cursor.getString(cursor.getColumnIndex(Constants.C_IMAGE))
-            if(image != null) {
+            if(image != "null") {
                 imageIV.setImageURI(Uri.parse(image))
             } else {
                 imageIV.setImageResource(R.drawable.ic_person_black)
             }
+        } else {
+            imageIV.setImageResource(R.drawable.ic_person_black)
         }
 
     }
