@@ -92,7 +92,7 @@
             android:layout_alignParentRight="true" />
 
         <ImageView
-            android:id="@+id/main_item_sms"
+            android:id="@+id/main_item_row_sms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="320dp"
