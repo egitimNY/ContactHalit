@@ -82,12 +82,21 @@
                     android:textColor="@color/colorBlack" />
 
                 <ImageView
+                    android:id="@+id/main_item_sms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="6dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_message" />
+
+                <ImageView
                     android:id="@+id/main_item_contact"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingTop="6dp"
                     android:clickable="true"
                     android:src="@drawable/ic_call" />
+
             </TableRow>
 
 
