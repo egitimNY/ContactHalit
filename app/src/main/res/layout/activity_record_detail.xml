@@ -80,6 +80,14 @@
                     android:padding="5dp"
                     android:text="User Phone"
                     android:textColor="@color/colorBlack" />
+
+                <ImageView
+                    android:id="@+id/main_item_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="6dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_call" />
             </TableRow>
 
 
@@ -157,14 +165,14 @@
                     android:textColor="@color/colorBlack" />
             </TableRow>
 
-            <ImageView
+ <!--           <ImageView
                 android:id="@+id/main_item_contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:clickable="true"
                 android:scaleType="center"
-                android:src="@drawable/icon_call_contact" />
+                android:src="@drawable/icon_call_contact" />-->
 
         </TableLayout>
     </LinearLayout>

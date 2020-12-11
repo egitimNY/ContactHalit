@@ -43,6 +43,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        val preferences = getSharedPreferences("PREFS", 0)
+        val ifShowDialog = preferences.getBoolean("showDialog", true)
+        if (ifShowDialog) {
+            showDialog()
+        }
+
+
         // init dbHelper
         dbHelper = MyDbHelper(this)
 
@@ -55,6 +63,35 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
+
+    private fun showDialog() {
+        val alertDialogBuilder =
+            androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+        alertDialogBuilder
+            .setMessage("This is dialog! This will be shown on every app launch until you click on the never show button. If you click OK, the dialog will be shown again on your next app launch.")
+            .setPositiveButton(
+                "I Don't Accept"
+            ) { dialog, which ->
+                //                    dialog.dismiss();
+                finish()
+            }
+            .setNeutralButton(
+                "I Accept"
+            ) { dialog, which ->
+                dialog.dismiss()
+                val preferences = getSharedPreferences("PREFS", 0)
+                val editor = preferences.edit()
+                editor.putBoolean("showDialog", false)
+                editor.apply()
+            }
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+    }
+
+
 
     private fun loadRecords(orderBy:String) {
         recentSortOrder = orderBy
