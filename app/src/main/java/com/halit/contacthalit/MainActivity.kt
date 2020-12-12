@@ -70,7 +70,8 @@ class MainActivity : AppCompatActivity() {
         val alertDialogBuilder =
             androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
         alertDialogBuilder
-            .setMessage("This is dialog! This will be shown on every app launch until you click on the never show button. If you click OK, the dialog will be shown again on your next app launch.")
+            .setTitle("Disclaimer")
+            .setMessage("The information provided in app though is compiled with utmost care,the app can not guarantee that this information is and stays 100% accurate. We therefore reserve all right of app and accept no liability for any kind of damage directly or indirectly that can come from the use or not able to use the information and functionality provided by app.")
             .setPositiveButton(
                 "I Don't Accept"
             ) { dialog, which ->
