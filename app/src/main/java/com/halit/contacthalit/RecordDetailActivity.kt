@@ -97,7 +97,7 @@ class RecordDetailActivity : AppCompatActivity() {
                     sendSMS(phone)
                 }
 
-                main_item_row_email.setOnClickListener {
+                main_item_detail_email.setOnClickListener {
                     sendEmail()
                 }
 
