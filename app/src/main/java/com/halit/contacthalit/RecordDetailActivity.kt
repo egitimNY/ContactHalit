@@ -1,10 +1,12 @@
 package com.halit.contacthalit
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -91,6 +93,14 @@ class RecordDetailActivity : AppCompatActivity() {
                     makeACall(phone)
                 }
 
+                main_item_detail_sms.setOnClickListener {
+                    sendSMS(phone)
+                }
+
+                main_item_row_email.setOnClickListener {
+                    sendEmail()
+                }
+
                 profileIv.setOnClickListener {
 
                     // pass id to next activity to show record
@@ -118,6 +128,40 @@ class RecordDetailActivity : AppCompatActivity() {
         }
         // close db connection
         db.close()
+    }
+
+    private fun sendSMS(phone: String) {
+        startActivity(Intent(Intent.ACTION_SENDTO).apply {
+            type = "vnd.android-dir/mms-sms"
+            data = Uri.parse("sms:$phone")
+            putExtra("sms_body", "dummy body")
+        })
+    }
+
+    private fun sendEmail() {
+        val emailIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            /*
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("info@gmail.com"))
+            putExtra(Intent.EXTRA_SUBJECT, "Hello There")
+            putExtra(Intent.EXTRA_TEXT, "Add Message here")
+            */
+
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(""))
+            putExtra(Intent.EXTRA_SUBJECT, "")
+            putExtra(Intent.EXTRA_TEXT, "")
+
+            type = "message/rfc822"
+        }
+
+        try {
+            startActivity(Intent.createChooser(emailIntent,
+                "Send email using..."));
+        } catch (ex: ActivityNotFoundException) {
+            Toast.makeText(this,
+                "No email clients installed.",
+                Toast.LENGTH_SHORT).show();
+        }
     }
 
     private fun makeACall(number: String) {

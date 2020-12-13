@@ -2,6 +2,7 @@ package com.halit.contacthalit
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
@@ -96,19 +98,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadRecords(orderBy:String) {
         recentSortOrder = orderBy
-        adapterRecord = AdapterRecord(this, dbHelper.getAllRecords(orderBy)) {
-            makeACall(it)
+        adapterRecord = AdapterRecord(this, dbHelper.getAllRecords(orderBy)) { type: AdapterRecord.Action ,data: String ->
+            handleAction(type, data)
         }
 
         recordRv.adapter = adapterRecord
     }
 
     private fun searchRecords(query:String) {
-        adapterRecord = AdapterRecord(this, dbHelper.searchRecords(query)) {
-            makeACall(it)
+        adapterRecord = AdapterRecord(this, dbHelper.searchRecords(query)) { type: AdapterRecord.Action ,data: String ->
+            handleAction(type, data)
         }
 
         recordRv.adapter = adapterRecord
+    }
+
+    private fun handleAction(type: AdapterRecord.Action, data: String) {
+        when(type){
+            AdapterRecord.Action.SMS -> sendSMS(data)
+            AdapterRecord.Action.PHONE -> makeACall(data)
+            AdapterRecord.Action.EMAIL -> sendEmail(data)
+        }
     }
 
     private fun makeACall(number: String) {
@@ -124,7 +134,36 @@ class MainActivity : AppCompatActivity() {
         val intent =
             Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))
         startActivity(intent)
+    }
 
+    private fun sendSMS(phone: String) {
+        startActivity(Intent(Intent.ACTION_SENDTO).apply {
+            type = "vnd.android-dir/mms-sms"
+            data = Uri.parse("sms:$phone")
+            putExtra("sms_body", "dummy body")
+        })
+    }
+
+    private fun sendEmail(email: String) {
+        val emailIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain";
+            putExtra(Intent.EXTRA_EMAIL, email)
+            putExtra(Intent.EXTRA_SUBJECT, "")
+            putExtra(Intent.EXTRA_TEXT, "")
+//            putExtra(Intent.EXTRA_SUBJECT, "Hello There")
+//            putExtra(Intent.EXTRA_TEXT, "Add Message here")
+
+            type = "message/rfc822"
+        }
+
+        try {
+            startActivity(Intent.createChooser(emailIntent,
+                "Send email using..."));
+        } catch (ex: ActivityNotFoundException) {
+            Toast.makeText(this,
+                "No email clients installed.",
+                Toast.LENGTH_SHORT).show();
+        }
     }
 
     private fun sortDialog() {

@@ -13,7 +13,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 // Adapter class for recyclerView
-class AdapterRecord(val makeACall: (number: String) -> Unit): RecyclerView.Adapter<AdapterRecord.HolderRecord>(){
+class AdapterRecord(val action: (type: Action, data: String) -> Unit): RecyclerView.Adapter<AdapterRecord.HolderRecord>(){
+
+    enum class Action {
+        PHONE,
+        EMAIL,
+        SMS
+    }
 
     private var context:Context?=null
     private var recordList:ArrayList<ModelRecord>?=null
@@ -21,7 +27,7 @@ class AdapterRecord(val makeACall: (number: String) -> Unit): RecyclerView.Adapt
     lateinit var dbHelper:MyDbHelper
 
 
-    constructor(context: Context?, recordList: ArrayList<ModelRecord>?, makeACall: (number: String) -> Unit) : this(makeACall) {
+    constructor(context: Context?, recordList: ArrayList<ModelRecord>?, action: (type: Action, data: String) -> Unit) : this(action) {
         this.context = context
         this.recordList = recordList
 
@@ -85,7 +91,15 @@ class AdapterRecord(val makeACall: (number: String) -> Unit): RecyclerView.Adapt
         }
 
         holder.main_item_contact.setOnClickListener {
-            makeACall(model.phone)
+            action(Action.PHONE, model.phone)
+        }
+
+        holder.main_item_sms.setOnClickListener {
+            action(Action.SMS, model.phone)
+        }
+
+        holder.main_item_email.setOnClickListener {
+            action(Action.EMAIL, model.email)
         }
 
         // handle more button click: show delete/edit options
@@ -166,6 +180,8 @@ class AdapterRecord(val makeACall: (number: String) -> Unit): RecyclerView.Adapt
         var morebtn:ImageButton = itemView.findViewById(R.id.moreBtn)
 
         var main_item_contact: ImageView = itemView.findViewById(R.id.main_item_contact)
+        var main_item_sms: ImageView = itemView.findViewById(R.id.main_item_row_sms)
+        var main_item_email: ImageView = itemView.findViewById(R.id.main_item_row_email)
     }
 
 
