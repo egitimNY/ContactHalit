@@ -18,4 +18,12 @@
         app:showAsAction="always"
         android:title="Sort"/>
 
+    <item
+        android:id="@+id/action_backup"
+        android:title="Backup" />
+
+    <item
+        android:id="@+id/action_restore"
+        android:title="Restore" />
+
 </menu>
