@@ -2,9 +2,7 @@ package com.halit.contacthalit
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -51,10 +49,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapterRecord: AdapterRecord
     //A variable to hold the phone number until user grants the permission to make a call
     private var number: String = ""
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("loggedIn",true).apply()
 
         // init array of permission
         storagePermission = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -423,6 +424,9 @@ class MainActivity : AppCompatActivity() {
 
             }
 
+        } else if(id == R.id.action_logout){
+            sharedPreferences.edit().putBoolean("loggedIn",false).apply()
+            finish()
         }
 
         return super.onOptionsItemSelected(item)
