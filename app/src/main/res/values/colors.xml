@@ -7,4 +7,9 @@
     <color name="colorWhite">#fff</color>
     <color name="colorGray">#e4e4e4</color>
     <color name="colorGray1">#C0B6B6</color>
+
+    <color name="background">#EEEDEF</color>
+    <color name="shapeRectangle">#3B3F47</color>
+    <color name="purple">#2727C4</color>
+
 </resources>
