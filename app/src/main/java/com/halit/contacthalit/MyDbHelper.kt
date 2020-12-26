@@ -170,8 +170,19 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         return count
     }
 
-    // Delete (single) record using record ID
-    fun deleteRecord(id: String, createdBy: String?){
+    // Delete (single) record using record ID   (Halit Changed)
+    fun deleteRecord(id: String, string: String?){
+        val  db = writableDatabase
+        db.delete(
+            Constants.TABLE_NAME,
+            "${Constants.C_ID} =?",
+            arrayOf(id)
+        )
+        db.close()
+    }
+
+      // Delete (single) record using record ID  (Sagar Changed)
+/*    fun deleteRecord(id: String, createdBy: String?){
         val  db = writableDatabase
         db.delete(
             Constants.TABLE_NAME,
@@ -179,7 +190,7 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
             arrayOf(id, "'$createdBy'")
         )
         db.close()
-    }
+    }*/
 
     // Delete all records
     fun deleteAllRecords(createdBy: String?){
