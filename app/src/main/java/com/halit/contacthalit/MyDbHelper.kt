@@ -61,16 +61,17 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
     }
 
     // update record to db
-    fun updateRecord(id:String,
-                     name: String?,
-                     image: String?,
-                     bio: String?,
-                     phone: String?,
-                     email: String?,
-                     dob: String?,
-                     addedTime: String?,
-                     updatedTime: String?,
-                     createdBy: String?):Long
+    fun updateRecord(
+        id: String,
+        name: String?,
+        image: String?,
+        bio: String?,
+        phone: String?,
+        email: String?,
+        dob: String?,
+        addedTime: String?,
+        updatedTime: String?
+    ):Long
      {
         // get writeAble database
         val db = this.writableDatabase
@@ -85,13 +86,12 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         values.put(Constants.C_DOB, dob)
         values.put(Constants.C_ADDED_TIMESTAMP, addedTime)
         values.put(Constants.C_UPDATED_TIMESTAMP, updatedTime)
-        values.put(Constants.C_CREATED_BY, createdBy)
 
          // update
          return db.update(Constants.TABLE_NAME,
              values,
-             "${Constants.C_ID}=? and ${Constants.C_CREATED_BY}=?",
-             arrayOf(id,"'$createdBy'")).toLong()
+             "${Constants.C_ID}=?",
+             arrayOf(id)).toLong()
     }
 
     // get all data
@@ -180,17 +180,6 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         )
         db.close()
     }
-
-      // Delete (single) record using record ID  (Sagar Changed)
-/*    fun deleteRecord(id: String, createdBy: String?){
-        val  db = writableDatabase
-        db.delete(
-            Constants.TABLE_NAME,
-            "${Constants.C_ID} =? and ${Constants.C_CREATED_BY}=?",
-            arrayOf(id, "'$createdBy'")
-        )
-        db.close()
-    }*/
 
     // Delete all records
     fun deleteAllRecords(createdBy: String?){

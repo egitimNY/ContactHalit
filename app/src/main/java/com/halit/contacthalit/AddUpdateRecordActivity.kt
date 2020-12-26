@@ -147,8 +147,7 @@ class AddUpdateRecordActivity : AppCompatActivity() {
                 "$email",
                 "$dob",
                 "$addedTime",
-                timeStamp,
-                userName
+                timeStamp
             )
             Toast.makeText(this,"Updated...", Toast.LENGTH_SHORT).show()
 
