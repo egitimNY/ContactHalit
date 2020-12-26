@@ -17,6 +17,7 @@ object Constants {
     const val C_DOB = "DOB"
     const val C_ADDED_TIMESTAMP = "ADDED_TIME_STAMP"
     const val C_UPDATED_TIMESTAMP = "UPDATED_TIMESTAMP"
+    const val C_CREATED_BY = "CREATED_BY"
 
     // create table query
     const val CREATE_TABLE = (
@@ -29,7 +30,8 @@ object Constants {
             + C_EMAIL + " TEXT,"
             + C_DOB + " TEXT,"
             + C_ADDED_TIMESTAMP + " TEXT,"
-            + C_UPDATED_TIMESTAMP + " TEXT"
+            + C_UPDATED_TIMESTAMP + " TEXT,"
+            + C_CREATED_BY + " TEXT"
             + ")"
             )
 }

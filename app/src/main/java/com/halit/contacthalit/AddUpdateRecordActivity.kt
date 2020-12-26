@@ -3,7 +3,9 @@ package com.halit.contacthalit
 import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -42,6 +44,8 @@ class AddUpdateRecordActivity : AppCompatActivity() {
 
     private var isEditMode = false
 
+    private lateinit var sharedPreferences: SharedPreferences
+    private var userName: String? = null
 
 
     // actionBar
@@ -52,7 +56,8 @@ class AddUpdateRecordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_update_record)
-
+        sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        userName = sharedPreferences.getString("userName","") ?: ""
         //init actionbar
         actionBar = supportActionBar
         //title of actionbar
@@ -142,7 +147,8 @@ class AddUpdateRecordActivity : AppCompatActivity() {
                 "$email",
                 "$dob",
                 "$addedTime",
-                "$timeStamp"
+                timeStamp,
+                userName
             )
             Toast.makeText(this,"Updated...", Toast.LENGTH_SHORT).show()
 
@@ -151,7 +157,7 @@ class AddUpdateRecordActivity : AppCompatActivity() {
 
             // save data to DB
             val timeStamp = System.currentTimeMillis()
-            val id = dbHelper.inserRecord(
+            val id = dbHelper.insertRecord(
                 ""+name,
                 ""+imageUri,
                 ""+bio,
@@ -159,7 +165,8 @@ class AddUpdateRecordActivity : AppCompatActivity() {
                 ""+email,
                 ""+dob,
                 "$timeStamp",
-                "$timeStamp"
+                "$timeStamp",
+                userName
             )
             Toast.makeText(this,"Record Added against ID $id", Toast.LENGTH_SHORT).show()
         }

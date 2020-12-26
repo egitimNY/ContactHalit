@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity() {
     private var recentSortOrder = NEWEST_FIRST
 
     //----for permission----
-    private val STORAGE_REQUEST_CODE_EXPORT = 1
-    private val STORAGE_REQUEST_CODE_IMPORT = 2
+    private val STORAGE_REQUEST_CODE_EXPORT = 2
+    private val STORAGE_REQUEST_CODE_IMPORT = 3
     private lateinit var storagePermission: Array<String>
 
     //reference variable of adapter to display a list of values in the recycler view
@@ -50,12 +50,17 @@ class MainActivity : AppCompatActivity() {
     //A variable to hold the phone number until user grants the permission to make a call
     private var number: String = ""
     private lateinit var sharedPreferences: SharedPreferences
+    private var loggedInUser: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         sharedPreferences.edit().putBoolean("loggedIn",true).apply()
+        loggedInUser = sharedPreferences.getString("userName","") ?: ""
+        if(loggedInUser.isNullOrEmpty()) {
+            finish()
+        }
 
         // init array of permission
         storagePermission = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -109,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         if (!folder.exists()) isFolderCreated = folder.mkdir()
 
         // file name
-        val csvFileName = "SQLite_Backup.csv"
+        val csvFileName = "SQLite_Backup$loggedInUser.csv"
 
         // file name and path
         val fileNameAndPath = "$folder/$csvFileName"
@@ -117,7 +122,7 @@ class MainActivity : AppCompatActivity() {
         // get records to save in backup
         var recordList = ArrayList<ModelRecord>()
         recordList.clear()
-        recordList = dbHelper.getAllRecords(OLDEST_FIRST)
+        recordList = dbHelper.getAllRecords(OLDEST_FIRST, loggedInUser)
 
         try {
             val fw = FileWriter(fileNameAndPath)
@@ -156,7 +161,7 @@ class MainActivity : AppCompatActivity() {
     fun importCSV() {
         // complete path of csv
         val filePathAndName =
-            "${Environment.getExternalStorageDirectory()}/SQLiteBackupKotlin/SQLite_Backup.csv"
+            "${Environment.getExternalStorageDirectory()}/SQLiteBackupKotlin/SQLite_Backup$loggedInUser.csv"
 
         val csfFile = File(filePathAndName)
 
@@ -180,7 +185,7 @@ class MainActivity : AppCompatActivity() {
 
                     // add to db
                     val timestamp = System.currentTimeMillis()
-                    val id = dbHelper.inserRecord(
+                    val id = dbHelper.insertRecord(
                         "" + name,
                         "" + image,
                         "" + bio,
@@ -188,7 +193,8 @@ class MainActivity : AppCompatActivity() {
                         "" + email,
                         "" + dob,
                         "$timestamp",
-                        "$timestamp"
+                        "$timestamp",
+                    "$loggedInUser"
                     )
                 }
             } catch (e: Exception) {
@@ -232,7 +238,7 @@ class MainActivity : AppCompatActivity() {
         recentSortOrder = orderBy
         adapterRecord = AdapterRecord(
             this,
-            dbHelper.getAllRecords(orderBy)
+            dbHelper.getAllRecords(orderBy, loggedInUser)
         ) { type: AdapterRecord.Action, data: String ->
             handleAction(type, data)
         }
@@ -243,7 +249,7 @@ class MainActivity : AppCompatActivity() {
     private fun searchRecords(query: String) {
         adapterRecord = AdapterRecord(
             this,
-            dbHelper.searchRecords(query)
+            dbHelper.searchRecords(query, loggedInUser)
         ) { type: AdapterRecord.Action, data: String ->
             handleAction(type, data)
         }
@@ -390,7 +396,7 @@ class MainActivity : AppCompatActivity() {
                 .setMessage("Do you want to delete All")
                 .setPositiveButton("Ok", object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface?, which: Int) {
-                        dbHelper.deleteAllRecords()
+                        dbHelper.deleteAllRecords(loggedInUser)
                         adapterRecord.clearRecords()
                     }
                 })

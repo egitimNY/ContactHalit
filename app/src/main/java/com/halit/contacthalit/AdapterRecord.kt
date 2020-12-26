@@ -3,6 +3,7 @@ package com.halit.contacthalit
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ class AdapterRecord(val action: (type: Action, data: String) -> Unit): RecyclerV
     private var recordList:ArrayList<ModelRecord>?=null
 
     lateinit var dbHelper:MyDbHelper
+    private var sharedPreferences: SharedPreferences? = null
 
 
     constructor(context: Context?, recordList: ArrayList<ModelRecord>?, action: (type: Action, data: String) -> Unit) : this(action) {
@@ -32,6 +34,7 @@ class AdapterRecord(val action: (type: Action, data: String) -> Unit): RecyclerV
         this.recordList = recordList
 
         dbHelper = MyDbHelper(context)
+        sharedPreferences = context?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
     }
 
     fun clearRecords() {
@@ -156,10 +159,11 @@ class AdapterRecord(val action: (type: Action, data: String) -> Unit): RecyclerV
                 context!!.startActivity(intent)
             }else{
                 // delete clicked
-
-                dbHelper.deleteRecord(id)
-                // Refresh record by calling Activity's onResume method
-                (context as MainActivity)!!.onResume()
+                if(sharedPreferences != null){
+                    dbHelper.deleteRecord(id, sharedPreferences?.getString("userName",""))
+                    // Refresh record by calling Activity's onResume method
+                    (context as MainActivity)!!.onResume()
+                }
 
             }
 

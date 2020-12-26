@@ -26,7 +26,7 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
     }
 
     // insert record to db
-    fun inserRecord(
+    fun insertRecord(
         name:String?,
         image:String?,
         bio:String?,
@@ -34,7 +34,8 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         email:String?,
         dob:String?,
         addedTime:String?,
-        updatedTime:String?
+        updatedTime:String?,
+        createdBy: String?
     ):Long{
         // get writeable database because we want to write data
         val db = this.writableDatabase
@@ -49,6 +50,7 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         values.put(Constants.C_DOB, dob)
         values.put(Constants.C_ADDED_TIMESTAMP, addedTime)
         values.put(Constants.C_UPDATED_TIMESTAMP, updatedTime)
+        values.put(Constants.C_CREATED_BY, createdBy)
 
         // insert row, it will return record id of saved record
         val id = db.insert(Constants.TABLE_NAME, null, values)
@@ -67,7 +69,8 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
                      email: String?,
                      dob: String?,
                      addedTime: String?,
-                     updatedTime: String?):Long
+                     updatedTime: String?,
+                     createdBy: String?):Long
      {
         // get writeAble database
         val db = this.writableDatabase
@@ -82,21 +85,22 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         values.put(Constants.C_DOB, dob)
         values.put(Constants.C_ADDED_TIMESTAMP, addedTime)
         values.put(Constants.C_UPDATED_TIMESTAMP, updatedTime)
+        values.put(Constants.C_CREATED_BY, createdBy)
 
          // update
          return db.update(Constants.TABLE_NAME,
              values,
-             "${Constants.C_ID}=?",
-             arrayOf(id)).toLong()
+             "${Constants.C_ID}=? and ${Constants.C_CREATED_BY}=?",
+             arrayOf(id,"'$createdBy'")).toLong()
     }
 
     // get all data
-    fun getAllRecords(orderBy:String):ArrayList<ModelRecord>{
+    fun getAllRecords(orderBy:String, createdBy: String?):ArrayList<ModelRecord>{
         // orderBy query will allow to sort data e.g. newest/oldest first, name ascending/descending
         // it will return list or record since we have used return type ArrayList<ModelRecord>
         val recordList = ArrayList<ModelRecord>()
         // query to select all records
-        val selectQuery = "SELECT * FROM ${Constants.TABLE_NAME} ORDER BY $orderBy"
+        val selectQuery = "SELECT * FROM ${Constants.TABLE_NAME} WHERE ${Constants.C_CREATED_BY}='$createdBy' ORDER BY $orderBy"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery, null)
             // looping through all record and to list
@@ -124,12 +128,12 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
     }
 
     // search data
-    fun searchRecords(query: String): ArrayList<ModelRecord>{
+    fun searchRecords(query: String, createdBy: String?): ArrayList<ModelRecord>{
         // it will return list or record since we have used return type ArrayList<ModelRecord>
         val recordList = ArrayList<ModelRecord>()
         // query to select all records
         val selectQuery =
-            "SELECT * FROM ${Constants.TABLE_NAME} WHERE ${Constants.C_NAME} LIKE '%$query%'"
+            "SELECT * FROM ${Constants.TABLE_NAME} WHERE ${Constants.C_CREATED_BY}='$createdBy' AND ${Constants.C_NAME} LIKE '%$query%'"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery, null)
         // looping through all record and to list
@@ -167,20 +171,20 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
     }
 
     // Delete (single) record using record ID
-    fun deleteRecord(id: String){
+    fun deleteRecord(id: String, createdBy: String?){
         val  db = writableDatabase
         db.delete(
             Constants.TABLE_NAME,
-            "${Constants.C_ID} =?",
-            arrayOf(id)
+            "${Constants.C_ID} =? and ${Constants.C_CREATED_BY}=?",
+            arrayOf(id, "'$createdBy'")
         )
         db.close()
     }
 
     // Delete all records
-    fun deleteAllRecords(){
+    fun deleteAllRecords(createdBy: String?){
         val db = writableDatabase
-        db.execSQL("DELETE FROM ${Constants.TABLE_NAME}")
+        db.execSQL("DELETE FROM ${Constants.TABLE_NAME} WHERE ${Constants.C_CREATED_BY}='$createdBy'")
         db.close()
     }
 }
