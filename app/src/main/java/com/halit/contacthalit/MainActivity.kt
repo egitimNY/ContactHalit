@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.halit.contacthalit.loginregister.LoginActivity
 import com.opencsv.CSVReader
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -432,6 +433,8 @@ class MainActivity : AppCompatActivity() {
 
         } else if(id == R.id.action_logout){
             sharedPreferences.edit().putBoolean("loggedIn",false).apply()
+             val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
             finish()
         }
 

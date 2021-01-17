@@ -122,7 +122,10 @@ class AddUpdateRecordActivity : AppCompatActivity() {
         }
 
         saveBtn.setOnClickListener {
-            inputData();
+            inputData()
+           /* val intent = Intent(this@AddUpdateRecordActivity, MainActivity::class.java)
+            startActivity(intent)*/
+            finish()
         }
     }
 
